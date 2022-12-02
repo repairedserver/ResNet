@@ -56,4 +56,16 @@ class BottleNeck(nn.Module):
                 nn.Conv2d(in_planes, out_planes * self.mul, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(out_planes * self.mul)
             )
-            
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = F.relu(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+        out = F.relu(out)
+        out = self.conv3(out)
+        out = self.bn3(out)
+        out += self.shortcut(x)
+        out = F.relu(out)
+        return out
