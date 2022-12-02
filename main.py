@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class BasicBlock(nn.Module):]
+class BasicBlock(nn.Module):
     mul = 1
 
     def __init__(self, in_planes, out_planes, stride=1):
@@ -22,3 +22,14 @@ class BasicBlock(nn.Module):]
                 nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(out_planes)
             )
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = F.relu(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+        out += self.shortcut(x)
+        out = F.relu(out)
+        return out
+    
